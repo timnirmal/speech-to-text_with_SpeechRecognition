@@ -22,3 +22,5 @@ if __name__ == '__main__':
 
 # Try Later
 # https://github.com/Uberi/speech_recognition/blob/master/examples/microphone_recognition.py
+
+# https://pypi.org/project/SpeechRecognition/
