@@ -1,9 +1,9 @@
 import speech_recognition as sr
 import pyttsx3
 
-dur = 2
+dur = 4
 speakingError = True
-word = "audio"
+phrase = "Audio word"
 
 # audio of system to respond
 engine = pyttsx3.init('sapi5')
@@ -28,7 +28,6 @@ def takecommand():
     try:
         print('Recognising...')
         query = r.recognize_google(audio, language='en-in')
-        print('User Said : ', query)
 
     except Exception as e:
         print('exception : ', e)
@@ -37,19 +36,41 @@ def takecommand():
 
 
 while True:
-    query = takecommand()  # whatever user says will be stored in this variable
-    print("The Test got in program is : " + query)
+    print("\nYou need to say : ", phrase, end="\n\n")
 
-    # Prounce check
-    if query in word:
-        print("Pronounce is correct")
-        if speakingError:
-            speak("Pronounce is correct")
-    elif query == "None":
+    query = takecommand()  # whatever user says will be stored in this variable
+    print("You said : " + query)
+
+    if query == "None":
         print("Sorry, I didn't hear that, Say that again Please")
         if speakingError:
             speak("Sorry, I didn't hear that, Say that again Please")
     else:
-        print("Pronounce is wrong")
-        if speakingError:
-            speak("Pronounce is wrong")
+        query = query.lower()
+        phrase = phrase.lower()
+        phraseList = phrase.split()
+        queryList = query.split()
+        wrongList = []
+        rightList = []
+
+        # find words not in phrase compare to queryList and print them
+        for word in phraseList:
+            if word not in queryList:
+                wrongList.append(word)
+            else:
+                rightList.append(word)
+
+        # print("phraseList : ", phraseList)
+        # print("queryList : ", queryList)
+        # print("wrongList : ", wrongList)
+        # print("rightList : ", rightList)
+
+        # if wrongList is empty
+        if len(wrongList) == 0:
+            print("Pronounce is correct")
+            if speakingError:
+                speak("Pronounce is correct")
+        else:
+            print("You pronounced ", wrongList, " wrong")
+            if speakingError:
+                speak("You pronounced " + str(wrongList) + " wrong")
