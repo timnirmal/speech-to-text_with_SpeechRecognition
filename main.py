@@ -1,6 +1,10 @@
 import speech_recognition as sr
 import pyttsx3
 
+dur = 2
+speakingError = True
+word = "audio"
+
 # audio of system to respond
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
@@ -19,15 +23,7 @@ def takecommand():
     r = sr.Recognizer()
     with sr.Microphone() as source:
         print('Listening.....')
-        #r.pause_threshold = 0.8
-        #r.energy_threshold = 4000
-        #audio = r.listen(source, timeout=2)
-        audio = r.record(source, duration=2)
-        # audio to file
-        with open('audio.wav', 'wb') as f:
-            f.write(audio.get_wav_data())
-
-
+        audio = r.record(source, duration=dur)
 
     try:
         print('Recognising...')
@@ -36,8 +32,6 @@ def takecommand():
 
     except Exception as e:
         print('exception : ', e)
-
-        speak("Sorry, I didn't hear that, Say that again Please")
         return "None"
     return query
 
@@ -45,3 +39,17 @@ def takecommand():
 while True:
     query = takecommand()  # whatever user says will be stored in this variable
     print("The Test got in program is : " + query)
+
+    # Prounce check
+    if query in word:
+        print("Pronounce is correct")
+        if speakingError:
+            speak("Pronounce is correct")
+    elif query == "None":
+        print("Sorry, I didn't hear that, Say that again Please")
+        if speakingError:
+            speak("Sorry, I didn't hear that, Say that again Please")
+    else:
+        print("Pronounce is wrong")
+        if speakingError:
+            speak("Pronounce is wrong")
